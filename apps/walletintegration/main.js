@@ -1,4 +1,4 @@
-// Playing with Moralis. The code is messy. That was quick coding.
+//QUick codinng for POC/Hackathon
 
 (function () {
   // Moralis keys - replace them with yours, only my user can add to the collection with this setup
