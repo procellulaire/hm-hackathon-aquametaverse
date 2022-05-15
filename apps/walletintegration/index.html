@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aqua Metaverse - Moralis Integration Test page</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <!-- Moralis SDK code -->
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script src="https://github.com/WalletConnect/walletconnect-monorepo/releases/download/1.4.1/web3-provider.min.js"></script>
+  <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+</head>
+
+<body>
+  <div class="container">
+
+    <h1>Test Connect</h1>
+    
+    <p id="user-address"></p>
+
+    <button id="metalogin" type="button" class="button">Metamask Login</button>
+    <button id="wclogin" type="button" class="button">WalletConnect Login</button>
+    <button id="logout" type="button" class="button">Logout</button>
+
+    <div id="for-logged-in-user" class="logged-in-section">
+      <p><strong>Your Ethereum transactions:</strong></p>
+      <div id="transactions-list" class="transactions"></div>
+      
+     
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
