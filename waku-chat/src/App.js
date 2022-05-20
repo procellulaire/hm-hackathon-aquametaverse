@@ -27,12 +27,15 @@ function App() {
   const processIncomingMessage = useCallback((wakuMessage) => {
     if (!wakuMessage.payload) return;
 
-    const { text, timestamp } = SimpleChatMessage.decode(wakuMessage.payload);
+    const { name, text, timestamp } = SimpleChatMessage.decode(
+      wakuMessage.payload
+    );
 
-    const time = new Date();
+    const time = new Date().toLocaleDateString("pt-PT");
     time.setTime(timestamp);
+    // console.log(time);
 
-    const message = { text, timestamp: time };
+    const message = { name, text, timestamp: time };
 
     setMessages((messages) => {
       return [message].concat(messages);
@@ -73,9 +76,13 @@ function App() {
         <ul>
           {messages.map((msg, key) => {
             return (
-              <li>
-                <p key={key}>
-                  {msg.timestamp.toString()}: {msg.text}
+              <li key={key}>
+                <p>
+                  {msg.name}{" "}
+                  <span style={{ fontSize: "10px" }}>
+                    {msg.timestamp.toString()}
+                  </span>
+                  : {msg.text}
                 </p>
               </li>
             );
