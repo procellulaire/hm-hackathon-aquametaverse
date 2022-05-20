@@ -42,23 +42,22 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!waku) return;
+    if (waku !== undefined) return;
+    if (wakuStatus !== "None") return;
 
     setWakuStatus("Starting");
 
     Waku.create({ bootstrap: { default: true } }).then((waku) => {
       setWaku(waku);
-
       setWakuStatus("Connecting");
+
       waku.waitForRemotePeer().then(() => {
         setWakuStatus("Ready");
       });
+      console.log("Waku", waku);
+      waku.relay.addObserver(processIncomingMessage, [ContentTopic]);
     });
-
-    waku.relay.addObserver(processIncomingMessage, [ContentTopic]);
   }, [waku, wakuStatus, processIncomingMessage]);
-
-  console.log(JSON.stringify({ waku, wakuStatus }));
 
   return (
     <div className="App">
