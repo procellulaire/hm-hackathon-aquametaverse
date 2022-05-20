@@ -31,11 +31,10 @@ function App() {
       wakuMessage.payload
     );
 
-    const time = new Date().toLocaleDateString("pt-PT");
-    time.setTime(timestamp);
-    // console.log(time);
+    const time = new Date();
+    // time.setTime(timestamp);
 
-    const message = { name, text, timestamp: time };
+    const message = { name, text, timestamp: time.toLocaleDateString("pt-PT") };
 
     setMessages((messages) => {
       return [message].concat(messages);

@@ -8,6 +8,8 @@ const shortname = uniqueNamesGenerator({
   dictionaries: [starWars, colors],
 });
 
+console.log(shortname);
+
 export function sendMessage(message, waku, timestamp) {
   const time = timestamp;
 
