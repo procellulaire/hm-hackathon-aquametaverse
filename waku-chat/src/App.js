@@ -71,10 +71,10 @@ function App() {
           Send Message
         </button>
         <ul>
-          {messages.map((msg) => {
+          {messages.map((msg, key) => {
             return (
               <li>
-                <p>
+                <p key={key}>
                   {msg.timestamp.toString()}: {msg.text}
                 </p>
               </li>
