@@ -60,7 +60,12 @@ function App() {
         setWakuStatus("Ready");
       });
       console.log("Waku", waku);
+
       waku.relay.addObserver(processIncomingMessage, [ContentTopic]);
+
+      return function cleanUp() {
+        waku.relay.deleteObserver(processIncomingMessage, [ContentTopic]);
+      };
     });
   }, [waku, wakuStatus, processIncomingMessage]);
 
