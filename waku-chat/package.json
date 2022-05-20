@@ -12,11 +12,13 @@
     "js-waku": "^0.23.0",
     "process": "^0.11.10",
     "protobufjs": "^6.11.2",
+    "protons": "^3.0.4",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-scripts": "5.0.1",
     "stream-browserify": "^3.0.0",
     "unique-names-generator": "^4.7.1",
+    "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

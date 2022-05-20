@@ -1,6 +1,8 @@
 import { Waku } from "js-waku";
-import { useState, useEffect, useCallback } from "react";
+import { Messages } from "./components/Messages";
 import { sendMessage } from "./components/sendMessage";
+import { useState, useEffect, useCallback } from "react";
+import { decodeMessage } from "./components/decodeMessages";
 import { SimpleChatMessage } from "./components/SimpleChatMessage";
 import "./App.css";
 
@@ -9,12 +11,10 @@ const ContentTopic = `/waku-chat/1/chat/proto`;
 function App() {
   const [waku, setWaku] = useState(undefined);
   const [wakuStatus, setWakuStatus] = useState("None");
+  const [messages, setMessages] = useState([]);
+  const [text, setText] = useState("");
 
   const [sendCounter, setSendCounter] = useState(0);
-
-  const [messages, setMessages] = useState([]);
-
-  const [text, setText] = useState("");
 
   const updateInput = (e) => {
     setText(e.target.value);
@@ -64,6 +64,31 @@ function App() {
     });
   }, [waku, wakuStatus, processIncomingMessage]);
 
+  useEffect(() => {
+    if (wakuStatus !== "Ready") return;
+
+    const processMessages = (retrievedMessages) => {
+      const messages = retrievedMessages.map(decodeMessage).filter(Boolean);
+
+      setMessages((currentMessages) => {
+        return currentMessages.concat(messages.reverse());
+      });
+    };
+
+    const startTime = new Date();
+    // 7 days/week, 24 hours/day, 60min/hour, 60secs/min, 100ms/sec
+    startTime.setTime(startTime.getTime() - 7 * 24 * 60 * 60 * 1000);
+    console.log("firing");
+    waku.store
+      .queryHistory([ContentTopic], {
+        callback: processMessages,
+        timeFilter: { startTime, endTime: new Date() },
+      })
+      .catch((e) => {
+        console.log("Failed to retrieve messages", e);
+      });
+  }, [waku, wakuStatus]);
+
   return (
     <div className="App">
       <header className="App-Header">
@@ -81,20 +106,8 @@ function App() {
         >
           Send Message
         </button>
-        <ul>
-          {messages.map((msg, key) => {
-            return (
-              <li key={key}>
-                <p>
-                  {msg.name}{" "}
-                  <span style={{ fontSize: "10px" }}>
-                    {msg.timestamp.toString()}
-                  </span>
-                  : {msg.text}
-                </p>
-              </li>
-            );
-          })}
+        <ul style={{ listStyle: "none" }}>
+          <Messages messages={messages} />
         </ul>
       </header>
     </div>
