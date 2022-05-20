@@ -14,22 +14,25 @@ function App() {
 
   const [messages, setMessages] = useState([]);
 
+  const [text, setText] = useState("");
+
+  const updateInput = (e) => {
+    setText(e.target.value);
+  };
+
   const sendMessageOnClick = () => {
     if (wakuStatus !== "Ready") return;
 
-    sendMessage(`Here is message #${sendCounter}`, waku, new Date()).then(() =>
-      console.log("Message sent")
-    );
+    sendMessage(text, waku, new Date()).then(() => console.log("Message sent"));
 
     setSendCounter(sendCounter + 1);
+    setText("");
   };
 
   const processIncomingMessage = useCallback((wakuMessage) => {
     if (!wakuMessage.payload) return;
 
-    const { name, text, timestamp } = SimpleChatMessage.decode(
-      wakuMessage.payload
-    );
+    const { name, text } = SimpleChatMessage.decode(wakuMessage.payload);
 
     const time = new Date();
     // time.setTime(timestamp);
@@ -65,6 +68,12 @@ function App() {
     <div className="App">
       <header className="App-Header">
         <p>Waku node's status: {wakuStatus}</p>
+        <input
+          type="input"
+          value={text}
+          placeholder="type message..."
+          onChange={updateInput}
+        />
         <button
           type="button"
           onClick={sendMessageOnClick}
